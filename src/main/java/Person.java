@@ -8,29 +8,32 @@ public class Person {
     private String lastName;
     private Sex sex;
     private int age;
-    Person mother;
-    Person father;
-    ArrayList<Person> siblings;
-    ArrayList<Person> children;
-    ArrayList<Pet> pets;
+    private Person mother;
+    private Person father;
+    private ArrayList<Person> siblings;
+    private ArrayList<Person> children;
+    private ArrayList<Pet> pets;
 
     // constructors:
-    public Person (String name, String lastName, int age, Sex sex) {
+    public Person(String name, String lastName, int age, Sex sex) {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
         this.sex = sex;
-        ArrayList<Person> parents = new ArrayList<>();
-
+        this.children = new ArrayList<>();
+        this.siblings = new ArrayList<>();
+        this.pets     = new ArrayList<>();
     }
 
-    public Person (String name, String middleName, String lastName, int age, Sex sex) {
+    public Person(String name, String middleName, String lastName, int age, Sex sex) {
         this.name = name;
         this.middleName = middleName;
         this.lastName = lastName;
         this.age = age;
         this.sex = sex;
-        ArrayList<Person> parents = new ArrayList<>();
+        this.children = new ArrayList<>();
+        this.siblings = new ArrayList<>();
+        this.pets     = new ArrayList<>();
     }
 
     // getters:
@@ -118,34 +121,88 @@ public class Person {
     // methods:
     public void addParents(Person mother, Person father) {
         if (mother != null) {
-            this.mother = mother;
+            mother.addChild(this);
         }
 
         if (father != null) {
-        this.father = father;
+            father.addChild(this);
         }
     }
 
-    public void addChild() {
+    public void addChild(Person child) {
+        if (child == null || child == this) {
+            return;
+        }
 
+        if (!this.children.contains(child)) {
+            this.children.add(child);
+        }
+
+        switch (this.sex) {
+            case MALE:
+                if (child.father == null) {
+                    child.father = this;
+                }
+                break;
+
+            case FEMALE:
+                if (child.mother == null) {
+                    child.mother = this;
+                }
+                break;
+
+            default:
+                if (child.mother == null) {
+                    child.mother = this;
+                } else if (child.father == null) {
+                    child.father = this;
+                }
+                break;
+        }
     }
 
-    public void addPet() {
+    public void addPet(Pet pet) {
+        if (pet == null) {
+            return;
+        }
 
+        if (!this.pets.contains(pet)) {
+            this.pets.add(pet);
+        }
+        if (pet.getOwner() == null) {
+            pet.setOwner(this);
+        }
+        if (pet.getOwner() != this) {
+            throw new IllegalStateException("Pet already owned by someone else");
+        }
     }
 
-    public void addSibling() {
 
+    public void addSibling(Person sibling) {
+        if (sibling == null || sibling == this) {
+            return;
+        }
+
+        if (!this.siblings.contains(sibling)) {
+            this.siblings.add(sibling);
+        }
+        if (!sibling.siblings.contains(this)) {
+            sibling.siblings.add(this);
+        }
     }
 
-    public void getGrandChildren () {
 
+    public ArrayList<Person> getGrandChildren() {
+        ArrayList<Person> grandChildren = new ArrayList<>();
+        for (Person child : this.children) {
+            grandChildren.addAll(child.children);
+        }
+        return grandChildren;
     }
+
 
     // enum:
     public enum Sex {
-        FEMALE, MALE
+      FEMALE, MALE
     }
-
-
 }

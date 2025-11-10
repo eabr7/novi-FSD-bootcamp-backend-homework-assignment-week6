@@ -4,7 +4,7 @@ public class Pet {
     private String name;
     private int age;
     private String species;
-    Person owner;
+    private Person owner;
 
     //constructor:
     public Pet(String name, int age, String species) {
