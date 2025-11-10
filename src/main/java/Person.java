@@ -10,9 +10,9 @@ public class Person {
     private int age;
     private Person mother;
     private Person father;
-    private ArrayList<Person> siblings;
-    private ArrayList<Person> children;
-    private ArrayList<Pet> pets;
+    private ArrayList<Person> children = new ArrayList<>();
+    private ArrayList<Person> siblings = new ArrayList<>();
+    private ArrayList<Pet> pets = new ArrayList<>();
 
     // constructors:
     public Person(String name, String lastName, int age, Sex sex) {
@@ -20,9 +20,7 @@ public class Person {
         this.lastName = lastName;
         this.age = age;
         this.sex = sex;
-        this.children = new ArrayList<>();
-        this.siblings = new ArrayList<>();
-        this.pets     = new ArrayList<>();
+
     }
 
     public Person(String name, String middleName, String lastName, int age, Sex sex) {
@@ -31,9 +29,6 @@ public class Person {
         this.lastName = lastName;
         this.age = age;
         this.sex = sex;
-        this.children = new ArrayList<>();
-        this.siblings = new ArrayList<>();
-        this.pets     = new ArrayList<>();
     }
 
     // getters:
@@ -199,7 +194,6 @@ public class Person {
         }
         return grandChildren;
     }
-
 
     // enum:
     public enum Sex {
