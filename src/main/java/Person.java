@@ -115,11 +115,15 @@ public class Person {
 
     // methods:
     public void addParents(Person mother, Person father) {
-        if (mother != null) {
+        if (mother != null && mother == father) {
+            throw new IllegalArgumentException("Mother and father cannot be the same person");
+        }
+
+        if (mother != null && mother != this) {
             mother.addChild(this);
         }
 
-        if (father != null) {
+        if (father != null && father != this) {
             father.addChild(this);
         }
     }
@@ -160,6 +164,9 @@ public class Person {
         if (pet == null) {
             return;
         }
+        if (pet.getOwner() != this) {
+            throw new IllegalStateException("Pet already owned by someone else");
+        }
 
         if (!this.pets.contains(pet)) {
             this.pets.add(pet);
@@ -167,15 +174,23 @@ public class Person {
         if (pet.getOwner() == null) {
             pet.setOwner(this);
         }
-        if (pet.getOwner() != this) {
-            throw new IllegalStateException("Pet already owned by someone else");
-        }
     }
 
-
     public void addSibling(Person sibling) {
-        if (sibling == null || sibling == this) {
-            return;
+        if (sibling == null) {
+            throw new NullPointerException("Cannot be left empty");
+        }
+
+        if (sibling == this) {
+            throw new IllegalArgumentException("Itself cannot be sibling");
+        }
+
+        if (sibling == this.mother || sibling == this.father) {
+            throw new IllegalArgumentException("A parent cannot be a sibling");
+        }
+
+        if (this.children.contains(sibling) || sibling.children.contains(this)) {
+            throw new IllegalArgumentException("A child cannot be a sibling");
         }
 
         if (!this.siblings.contains(sibling)) {
@@ -186,11 +201,10 @@ public class Person {
         }
     }
 
-
     public ArrayList<Person> getGrandChildren() {
         ArrayList<Person> grandChildren = new ArrayList<>();
-        for (Person child : this.children) {
-            grandChildren.addAll(child.children);
+        for (Person child : this.getChildren()) {
+            grandChildren.addAll(child.getChildren());
         }
         return grandChildren;
     }
