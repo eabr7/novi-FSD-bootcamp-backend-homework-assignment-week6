@@ -46,6 +46,14 @@ public class Pet {
     public void setOwner(Person owner) {
         this.owner = owner;
     }
+
+    // toString() changing for readability in the terminal:
+    @Override
+    public String toString() {
+        String ownerName = (owner != null) ? owner.getName() : "<none>";
+        return "Pet{name='" + name + "', species='" + species + "', age=" + age +
+                ", owner=" + ownerName + "}";
+    }
 }
 
 

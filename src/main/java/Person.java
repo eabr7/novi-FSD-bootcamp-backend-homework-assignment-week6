@@ -164,13 +164,15 @@ public class Person {
         if (pet == null) {
             return;
         }
-        if (pet.getOwner() != this) {
+
+        if (pet.getOwner() != null && pet.getOwner() != this) {
             throw new IllegalStateException("Pet already owned by someone else");
         }
 
         if (!this.pets.contains(pet)) {
             this.pets.add(pet);
         }
+
         if (pet.getOwner() == null) {
             pet.setOwner(this);
         }
@@ -212,5 +214,22 @@ public class Person {
     // enum:
     public enum Sex {
       FEMALE, MALE
+    }
+
+    // toString() changing for readability in the terminal:
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                (middleName != null ? ", middleName='" + middleName + '\'' : "") +
+                ", lastName='" + lastName + '\'' +
+                ", sex=" + sex +
+                ", age=" + age +
+                ", mother=" + (mother != null ? mother.getName() : "<none>") +
+                ", father=" + (father != null ? father.getName() : "<none>") +
+                ", childrenCount=" + (children != null ? children.size() : 0) +
+                ", siblingsCount=" + (siblings != null ? siblings.size() : 0) +
+                ", petsCount=" + (pets != null ? pets.size() : 0) +
+                '}';
     }
 }
