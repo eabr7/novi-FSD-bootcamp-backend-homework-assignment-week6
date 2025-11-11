@@ -51,8 +51,9 @@ public class Pet {
     @Override
     public String toString() {
         String ownerName = (owner != null) ? owner.getName() : "<none>";
-        return "Pet{name='" + name + "', species='" + species + "', age=" + age +
-                ", owner=" + ownerName + "}";
+        return "Pet{" +
+                "name='" + name + "', species='" + species + "', age=" + age +
+                ", owner=" + ownerName + '}';
     }
 }
 

@@ -3,8 +3,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
-
-
 public class PersonTest {
 
 
@@ -20,8 +18,19 @@ public class PersonTest {
 //
 //        //Assert:
 //        assertEquals(expectedResult, actual);
+
+    @Test
+    @DisplayName("Person name should not be changed during the creation of an Pet instance")
+    void personNameShouldNotBeChanged() {
+        // Arrange:
+        Person dummyPerson = new Person("James", "Bond", 45, Person.Sex.MALE);
+        String expectedResult = "James";
+
+        //Act:
+        String name = dummyPerson.getName();
+
+        // assert:
+        assertEquals(expectedResult, name);
     }
-
-
 
 }
