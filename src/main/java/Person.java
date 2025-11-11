@@ -115,10 +115,6 @@ public class Person {
 
     // methods:
     public void addParents(Person mother, Person father) {
-        if (mother != null && mother == father) {
-            throw new IllegalArgumentException("Mother and father cannot be the same person");
-        }
-
         if (mother != null && mother != this) {
             mother.addChild(this);
         }
@@ -129,10 +125,6 @@ public class Person {
     }
 
     public void addChild(Person child) {
-        if (child == null || child == this) {
-            return;
-        }
-
         if (!this.children.contains(child)) {
             this.children.add(child);
         }
@@ -149,24 +141,12 @@ public class Person {
                     child.mother = this;
                 }
                 break;
-
-            default:
-                if (child.mother == null) {
-                    child.mother = this;
-                } else if (child.father == null) {
-                    child.father = this;
-                }
-                break;
         }
     }
 
     public void addPet(Pet pet) {
         if (pet == null) {
             return;
-        }
-
-        if (pet.getOwner() != null && pet.getOwner() != this) {
-            throw new IllegalStateException("Pet already owned by someone else");
         }
 
         if (!this.pets.contains(pet)) {
@@ -179,22 +159,6 @@ public class Person {
     }
 
     public void addSibling(Person sibling) {
-        if (sibling == null) {
-            throw new NullPointerException("Cannot be left empty");
-        }
-
-        if (sibling == this) {
-            throw new IllegalArgumentException("Itself cannot be sibling");
-        }
-
-        if (sibling == this.mother || sibling == this.father) {
-            throw new IllegalArgumentException("A parent cannot be a sibling");
-        }
-
-        if (this.children.contains(sibling) || sibling.children.contains(this)) {
-            throw new IllegalArgumentException("A child cannot be a sibling");
-        }
-
         if (!this.siblings.contains(sibling)) {
             this.siblings.add(sibling);
         }
