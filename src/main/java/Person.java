@@ -8,29 +8,27 @@ public class Person {
     private String lastName;
     private Sex sex;
     private int age;
-    Person mother;
-    Person father;
-    ArrayList<Person> siblings;
-    ArrayList<Person> children;
-    ArrayList<Pet> pets;
+    private Person mother;
+    private Person father;
+    private ArrayList<Person> children = new ArrayList<>();
+    private ArrayList<Person> siblings = new ArrayList<>();
+    private ArrayList<Pet> pets = new ArrayList<>();
 
     // constructors:
-    public Person (String name, String lastName, int age, Sex sex) {
+    public Person(String name, String lastName, int age, Sex sex) {
         this.name = name;
         this.lastName = lastName;
         this.age = age;
         this.sex = sex;
-        ArrayList<Person> parents = new ArrayList<>();
 
     }
 
-    public Person (String name, String middleName, String lastName, int age, Sex sex) {
+    public Person(String name, String middleName, String lastName, int age, Sex sex) {
         this.name = name;
         this.middleName = middleName;
         this.lastName = lastName;
         this.age = age;
         this.sex = sex;
-        ArrayList<Person> parents = new ArrayList<>();
     }
 
     // getters:
@@ -117,35 +115,85 @@ public class Person {
 
     // methods:
     public void addParents(Person mother, Person father) {
-        if (mother != null) {
-            this.mother = mother;
+        if (mother != null && mother != this) {
+            mother.addChild(this);
         }
 
-        if (father != null) {
-        this.father = father;
+        if (father != null && father != this) {
+            father.addChild(this);
         }
     }
 
-    public void addChild() {
+    public void addChild(Person child) {
+        if (!this.children.contains(child)) {
+            this.children.add(child);
+        }
 
+        switch (this.sex) {
+            case MALE:
+                if (child.father == null) {
+                    child.father = this;
+                }
+                break;
+
+            case FEMALE:
+                if (child.mother == null) {
+                    child.mother = this;
+                }
+                break;
+        }
     }
 
-    public void addPet() {
+    public void addPet(Pet pet) {
+        if (pet == null) {
+            return;
+        }
 
+        if (!this.pets.contains(pet)) {
+            this.pets.add(pet);
+        }
+
+        if (pet.getOwner() == null) {
+            pet.setOwner(this);
+        }
     }
 
-    public void addSibling() {
-
+    public void addSibling(Person sibling) {
+        if (!this.siblings.contains(sibling)) {
+            this.siblings.add(sibling);
+        }
+        if (!sibling.siblings.contains(this)) {
+            sibling.siblings.add(this);
+        }
     }
 
-    public void getGrandChildren () {
-
+    public ArrayList<Person> getGrandChildren() {
+        ArrayList<Person> grandChildren = new ArrayList<>();
+        for (Person child : this.getChildren()) {
+            grandChildren.addAll(child.getChildren());
+        }
+        return grandChildren;
     }
 
     // enum:
     public enum Sex {
-        FEMALE, MALE
+      FEMALE, MALE
     }
 
-
+    // toString() changing for readability in the terminal:
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                (middleName != null ? ", middleName='" + middleName + '\'' : "") +
+                ", lastName='" + lastName + '\'' +
+                ", sex=" + sex +
+                ", age=" + age +
+                ", mother=" + (mother != null ? mother.getName() : "<none>") +
+                ", father=" + (father != null ? father.getName() : "<none>") +
+                ", childrenCount=" + (children != null ? children.size() : 0) +
+                ", siblingsCount=" + (siblings != null ? siblings.size() : 0) +
+                ", petsCount=" + (pets != null ? pets.size() : 0) +
+                '}';
+    }
 }

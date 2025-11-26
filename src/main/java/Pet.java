@@ -4,7 +4,7 @@ public class Pet {
     private String name;
     private int age;
     private String species;
-    Person owner;
+    private Person owner;
 
     //constructor:
     public Pet(String name, int age, String species) {
@@ -45,6 +45,15 @@ public class Pet {
 
     public void setOwner(Person owner) {
         this.owner = owner;
+    }
+
+    // toString() changing for readability in the terminal:
+    @Override
+    public String toString() {
+        String ownerName = (owner != null) ? owner.getName() : "<none>";
+        return "Pet{" +
+                "name='" + name + "', species='" + species + "', age=" + age +
+                ", owner=" + ownerName + '}';
     }
 }
 
